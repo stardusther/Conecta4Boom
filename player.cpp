@@ -60,13 +60,10 @@ double ValoracionTest(const Environment &estado, int jugador){
 double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
 
     double valor = 0;
+    int casillaSelec = estado.See_Casilla(fila,col), // Casilla seleccionada
+        casillaCercana;                              // Casillas que están al lado de la casilla a valorar
 
-    // Casilla seleccionada
-    int casillaSelec = estado.See_Casilla(fila,col);
-    // Casillas que están al lado de la casilla a valorar
-    int casillaCercana;
-
-    switch(casillaSelec){
+   /* switch(casillaSelec){
     case 4: // Ficha bomba j1 pertenece al j1
         casillaSelec = 1;
         break;
@@ -76,15 +73,15 @@ double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
     case 0: // Ficha vacia = 0
         casillaSelec = jugador;
         break;
-    }
+    }*/
 
-   /* if (casillaSelec == 4) // Ficha bomba j1 pertenece al j1
+   if (casillaSelec == 4) // Ficha bomba j1 pertenece al j1
         casillaSelec = 1;
     else if(casillaSelec == 5) // Ficha bomba j2 pertenece al j2
         casillaSelec == 2;
     else if(casillaSelec == 0)  // Ficha vacia = 0 , pertenece al jugar actual
         casillaSelec == jugador;
-*/
+
     //Analizamos las 8 casillas que rodean a la seleccionada
     for (int i=fila-1; i<=fila+1; i++){
         for (int j=col-1; j<=col+1; j++){
