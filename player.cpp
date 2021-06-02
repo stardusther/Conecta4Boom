@@ -20,7 +20,7 @@ void Player::Perceive(const Environment & env){
     actual_=env;
 }
 
-double Puntuacion(int jugador, const Environment &estado){
+/*double Puntuacion(int jugador, const Environment &estado){
     double suma=0;
 
     for (int i=0; i<7; i++)
@@ -41,15 +41,15 @@ double Puntuacion(int jugador, const Environment &estado){
 double ValoracionTest(const Environment &estado, int jugador){
     int ganador = estado.RevisarTablero();
 
-    if (ganador==jugador)
-       return 99999999.0; // Gana el jugador que pide la valoracion
+    if (ganador == jugador)
+       return 99999999.0; // Gana el jugador verde
     else if (ganador!=0)
             return -99999999.0; // Pierde el jugador que pide la valoracion
-    else if (estado.Get_Casillas_Libres()==0)
+    else if (estado.Get_Casillas_Libres() == 0)
             return 0;  // Hay un empate global y se ha rellenado completamente el tablero
     else
           return Puntuacion(jugador,estado);
-}
+}*/
 
 // ------------------- Los tres metodos anteriores no se pueden modificar
 
@@ -57,45 +57,45 @@ double ValoracionTest(const Environment &estado, int jugador){
 
 
 // Devuelve un valor segun la heuristica de cada casilla seleccionada
-double ValorCasilla(const Environment &estado,int jugador,int fila,int col){
+double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
 
     double valor = 0;
 
-    //Casilla seleccionada
+    // Casilla seleccionada
     int casillaSelec = estado.See_Casilla(fila,col);
-    //Casillas que están al lado de la casilla a valoruar
+    // Casillas que están al lado de la casilla a valorar
     int casillaCercana;
 
+    switch(casillaSelec){
+    case 4: // Ficha bomba j1 pertenece al j1
+        casillaSelec = 1;
+        break;
+    case 5: // Ficha bomba j2 pertenece al j2
+        casillaSelec = 2;
+        break;
+    case 0: // Ficha vacia = 0
+        casillaSelec = jugador;
+        break;
+    }
 
-    //Ficha bomba j1 pertenece al j1
-    if (casillaSelec==4)
-        casillaSelec=1;
-
-    //Ficha bomba j2 pertenece al j2
-    else if(casillaSelec==5)
+   /* if (casillaSelec == 4) // Ficha bomba j1 pertenece al j1
+        casillaSelec = 1;
+    else if(casillaSelec == 5) // Ficha bomba j2 pertenece al j2
         casillaSelec == 2;
-
-    //Ficha vacia = 0 , pertenece al jugar actual
-    else if(casillaSelec == 0)
+    else if(casillaSelec == 0)  // Ficha vacia = 0 , pertenece al jugar actual
         casillaSelec == jugador;
-
-
+*/
     //Analizamos las 8 casillas que rodean a la seleccionada
     for (int i=fila-1; i<=fila+1; i++){
         for (int j=col-1; j<=col+1; j++){
 
-            //Si la casilla seleccionada es la correcta y esta dentro del tablero
-            if(i!=fila && j!=col && i>=0 && i<7 && j>=0 && j<7){
-
+            if(i!=fila && j!=col && i>=0 && i<7 && j>=0 && j<7){ //Si la casilla seleccionada es la correcta y está dentro del tablero
                 casillaCercana = estado.See_Casilla(i,j);
 
-                //Si la casilla es la del jugador actual comprobamos que no este al lado de ninguna de su mismo color y de ser asi se reduce el valor
-                if((casillaCercana == casillaSelec || casillaCercana == casillaSelec + 3) && casillaSelec == jugador)
+                if((casillaCercana == casillaSelec || casillaCercana == casillaSelec + 3) && casillaSelec == jugador) //Si la casilla es la del jugador actual comprobamos que no este al lado de ninguna de su mismo color y de ser asi se reduce el valor
                     valor = valor -2 ;
-
-            //En caso contrario aumentamos la valoracion. Ya que estara al lado de distinto color, o de una del adversario.
-            else
-                valor++;
+                else //En caso contrario aumentamos la valoracion. Ya que estara al lado de distinto color, o de una del adversario.
+                    valor++;
          }
       }
    }
@@ -108,9 +108,9 @@ return valor;
 double func_heur(const Environment &estado,int jugador){
     double total;
 
-    for (int fil=0; fil<7; ++fil)       //Recorrer la matriz
+    for (int fil=0; fil<7; ++fil)       // Recorremos la matriz
         for (int col=0; col<7; ++col)
-            total += ValorCasilla(estado,jugador,fil,col);
+            total += ValorCasilla(estado,jugador, fil, col);
 
     return total;
 }
@@ -144,7 +144,7 @@ void JuegoAleatorio(bool aplicables[], int opciones[], int &j){
 }
 
 
-double Poda_AlfaBeta(const Environment &actual,int jugador, int profundidad,  int PROFUNDIDAD_ALFABETA, Environment::ActionType &accion, double alpha, double beta ){
+double Poda_AlfaBeta(const Environment &actual,int jugador, int profundidad,  int PROFUNDIDAD_ALFABETA, Environment::ActionType &accion, double alpha, double beta){
 
     double valor_nodo;        // Valor del nodo
     Environment hijo[8];      // Nodo Inicial y todos sus estados
@@ -152,21 +152,15 @@ double Poda_AlfaBeta(const Environment &actual,int jugador, int profundidad,  in
     int num_hijos = actual.GenerateAllMoves(hijo);
     Environment estado = hijo[0];
 
-    // Si hemos llegado a la profundidad MAX
-    if (profundidad == PROFUNDIDAD_ALFABETA || actual.JuegoTerminado())
+    if (profundidad == PROFUNDIDAD_ALFABETA || actual.JuegoTerminado()) // Si hemos llegado a la profundidad MAX
         return Valoracion(actual,jugador);
 
-    //Estamos en un nodo MAX si se cumple ;
-    if (actual.JugadorActivo()==jugador)
-    {
+    if (actual.JugadorActivo()==jugador) { //Estamos en un nodo MAX
 
-        for(int i = 0; i< num_hijos; i++)
-        {
-
+        for(int i = 0; i< num_hijos; i++) {
             valor_nodo = Poda_AlfaBeta(hijo[i], jugador, profundidad+1, PROFUNDIDAD_ALFABETA, accion, alpha, beta);
 
-            if (valor_nodo > alpha )
-            {
+            if (valor_nodo > alpha ) {
                 alpha = valor_nodo;
                 estado = hijo[i];
             }
@@ -178,13 +172,12 @@ double Poda_AlfaBeta(const Environment &actual,int jugador, int profundidad,  in
         accion = static_cast <Environment::ActionType>(estado.Last_Action(jugador));
         return alpha;   // Devolvemos el nodo alpha
 
-    } else  { // Si no , estamos en un nodo MIN
-        for (int i = 0 ; i < num_hijos ; i++)
-        {
+    } else { // Si no , estamos en un nodo MIN
+
+        for (int i = 0 ; i < num_hijos ; i++) {
             valor_nodo = Poda_AlfaBeta(hijo[i], jugador, profundidad+1, PROFUNDIDAD_ALFABETA, accion, alpha, beta);
 
-            if (valor_nodo < beta)
-            {
+            if (valor_nodo < beta) {
                 beta = valor_nodo;
                 estado = hijo[i];
             }
@@ -264,7 +257,7 @@ Environment::ActionType Player::Think(){
 
     //--------------------- AQUI EMPIEZA LA PARTE A REALIZAR POR EL ALUMNO ------------------------------------------------
 
-    if (actual_.See_Casilla(0,0) == 0 &&    // Para que empiece por la casilla central siempre oorque si no me da TOC
+    if (actual_.See_Casilla(0,0) == 0 &&    // Para que empiece por la casilla central siempre porque si no me da TOC
 	  actual_.See_Casilla(0,1) == 0 &&
 	  actual_.See_Casilla(0,2) == 0 &&
 	  actual_.See_Casilla(0,3) == 0 &&
