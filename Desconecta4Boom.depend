@@ -443,3 +443,163 @@
 	"player.h"
 	"environment.h"
 
+1461949476 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\conexion.cpp
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<winsock2.h>
+	"conexion.h"
+
+1430477950 c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\conexion.h
+	<winsock2.h>
+
+1620911202 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\environment.cpp
+	<iostream>
+	<cmath>
+	<iomanip>
+	<string>
+	"stdlib.h"
+	"environment.h"
+	"include/GL/glui.h"
+
+1620911114 c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\environment.h
+	<string>
+	<fstream>
+
+1208862122 c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\gl\glui.h
+	"openglut.h"
+	<cstdlib>
+	<cstdio>
+	<cstring>
+	<string>
+	<vector>
+
+1207925790 c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\gl\openglut.h
+	"openglut_std.h"
+	"openglut_ext.h"
+
+1208463942 c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\gl\openglut_std.h
+	<windows.h>
+	"gl.h"
+	"glu.h"
+
+1107066920 c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\gl\gl.h
+
+1208464014 c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\gl\glu.h
+	<stddef.h>
+	"gl.h"
+
+1207925790 c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\gl\openglut_ext.h
+
+1620929276 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\gui.cpp
+	<fstream>
+	<sstream>
+	<iomanip>
+	<iostream>
+	<string>
+	"GUI.h"
+	<stdlib.h>
+	"environment.h"
+	"player.h"
+	"conexion.h"
+
+1430130682 c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\gui.h
+	<fstream>
+	"include/GL/glui.h"
+
+1622498727 c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\player.h
+	"environment.h"
+
+1152204176 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui.cpp
+	"glui_internal_control.h"
+
+1152204812 c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_internal_control.h
+	"GL/glui.h"
+	"glui_internal.h"
+
+1120532240 c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_internal.h
+	<cstdio>
+	<cmath>
+
+1152204176 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_bitmap_img_data.cpp
+
+1152204176 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_bitmaps.cpp
+	"GL/glui.h"
+	"glui_internal.h"
+	<cassert>
+
+1152204176 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_button.cpp
+	"glui_internal_control.h"
+
+1152204176 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_column.cpp
+	"glui_internal_control.h"
+
+1152204176 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_control.cpp
+	"glui_internal_control.h"
+
+1152204176 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_edittext.cpp
+	"glui_internal_control.h"
+	<cassert>
+
+1240417432 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_filebrowser.cpp
+	"GL/glui.h"
+	"glui_internal.h"
+	<sys/types.h>
+	<dirent.h>
+	<unistd.h>
+	<windows.h>
+	<sys/stat.h>
+	<iostream>
+
+1152204176 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_list.cpp
+	"glui_internal_control.h"
+	<cmath>
+	<sys/timeb.h>
+
+1120538608 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_node.cpp
+	"GL/glui.h"
+	"glui_internal.h"
+
+1208460170 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_panel.cpp
+	"glui_internal_control.h"
+
+1152204176 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_radio.cpp
+	"glui_internal_control.h"
+	<cassert>
+
+1152204176 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_rollout.cpp
+	"glui_internal_control.h"
+
+1152204176 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_scrollbar.cpp
+	"glui_internal_control.h"
+	<cmath>
+	<cassert>
+
+1152204176 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_spinner.cpp
+	"glui_internal_control.h"
+	<cmath>
+	<cassert>
+
+1152204176 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_statictext.cpp
+	"glui_internal_control.h"
+
+1120538608 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_string.cpp
+	"GL/glui.h"
+	<stdarg.h>
+
+1120538608 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\include\glui_window.cpp
+	"GL/glui.h"
+	"glui_internal.h"
+
+1401651800 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\main.cpp
+	"GUI.h"
+
+1622495385 source:c:\users\esther\documents\universidad\segundo\ia\1 - pr¡cticas\conecta4boom\player.cpp
+	<iostream>
+	<cstdlib>
+	<vector>
+	<queue>
+	"player.h"
+	"environment.h"
+
