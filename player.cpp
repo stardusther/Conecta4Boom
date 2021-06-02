@@ -63,18 +63,6 @@ double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
     int casillaSelec = estado.See_Casilla(fila,col), // Casilla seleccionada
         casillaCercana;                              // Casillas que están al lado de la casilla a valorar
 
-   /* switch(casillaSelec){
-    case 4: // Ficha bomba j1 pertenece al j1
-        casillaSelec = 1;
-        break;
-    case 5: // Ficha bomba j2 pertenece al j2
-        casillaSelec = 2;
-        break;
-    case 0: // Ficha vacia = 0
-        casillaSelec = jugador;
-        break;
-    }*/
-
    if (casillaSelec == 4) // Ficha bomba j1 pertenece al j1
         casillaSelec = 1;
     else if(casillaSelec == 5) // Ficha bomba j2 pertenece al j2
@@ -93,9 +81,9 @@ double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
                     valor = valor -2 ;
                 else //En caso contrario aumentamos la valoracion. Ya que estara al lado de distinto color, o de una del adversario.
                     valor++;
-         }
-      }
-   }
+            }
+        }
+    }
 
 return valor;
 }
@@ -118,7 +106,7 @@ double Valoracion(const Environment &estado, int jugador){
     int ganador = estado.RevisarTablero();
 
     if (ganador==jugador)
-        return 99999999.0; // Gana el jugador que pide la valoracion
+        return 99999999.0;  // Gana el jugador que pide la valoracion
     else if (ganador != 0)
         return -99999999.0; // Pierde el jugador que pide la valoracion
     else if (estado.Get_Casillas_Libres()==0)
@@ -130,7 +118,7 @@ double Valoracion(const Environment &estado, int jugador){
 // Esta funcion no se puede usar en la version entregable
 // Aparece aqui solo para ILUSTRAR el comportamiento del juego
 // ESTO NO IMPLEMENTA NI MINIMAX, NI PODA ALFABETA
-void JuegoAleatorio(bool aplicables[], int opciones[], int &j){
+/*void JuegoAleatorio(bool aplicables[], int opciones[], int &j){
     j=0;
     for (int i=0; i<8; i++){
         if (aplicables[i]){
@@ -138,7 +126,7 @@ void JuegoAleatorio(bool aplicables[], int opciones[], int &j){
            j++;
         }
     }
-}
+}*/
 
 
 double Poda_AlfaBeta(const Environment &actual,int jugador, int profundidad,  int PROFUNDIDAD_ALFABETA, Environment::ActionType &accion, double alpha, double beta){
@@ -262,7 +250,7 @@ Environment::ActionType Player::Think(){
 	  actual_.See_Casilla(0,5) == 0 &&
 	  actual_.See_Casilla(0,6) == 0)
 	{
-	  cout << "ES LA PRIMERA TIRADA" << endl;
+	  cout << "Primera jugada" << endl;
 	  return Environment::PUT4;
 
 	}
