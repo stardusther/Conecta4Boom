@@ -53,6 +53,55 @@ double ValoracionTest(const Environment &estado, int jugador){
 
 // ------------------- Los tres metodos anteriores no se pueden modificar
 
+bool CompDoble(const Environment &estado, int CasillaSelec, int fil, int col, double &valor){
+    bool arriba, abajo, diag1, diag2, diag3, diag4, izq, dch; // al rededor
+    bool doble = false;
+
+    arriba = estado.See_Casilla(fil+1,col) == CasillaSelec || estado.See_Casilla(fil+1,col) == CasillaSelec+3;
+    abajo = estado.See_Casilla(fil-1,col) == CasillaSelec || estado.See_Casilla(fil-1,col) == CasillaSelec+3;
+    diag1 = estado.See_Casilla(fil+1,col-1) == CasillaSelec || estado.See_Casilla(fil+1,col-1) == CasillaSelec+3;
+    diag2 = estado.See_Casilla(fil+1,col+1) == CasillaSelec || estado.See_Casilla(fil+1,col+1) == CasillaSelec+3;
+    diag3 = estado.See_Casilla(fil-1,col-1) == CasillaSelec || estado.See_Casilla(fil-1,col-1) == CasillaSelec+3;
+    diag4 = estado.See_Casilla(fil-1,col+1) == CasillaSelec || estado.See_Casilla(fil-1,col+1) == CasillaSelec+3;
+    izq = estado.See_Casilla(fil,col-1) == CasillaSelec || estado.See_Casilla(fil,col-1) == CasillaSelec+3;
+    dch = estado.See_Casilla(fil,col+1) == CasillaSelec || estado.See_Casilla(fil,col+1) == CasillaSelec+3;
+
+    if(arriba || abajo || diag1 || diag2 || diag3|| diag4 || izq || dch){
+        doble=true;
+        valor+=2;
+    }
+    return doble;
+}
+
+bool CompTriple(const Environment &estado, int CasillaSelec, int fil, int col, double &valor){
+    bool arriba, abajo, diag1, diag2, diag3, diag4, izq, dch; // al rededor
+    bool triple = false;
+    double aux;
+
+    arriba = (estado.See_Casilla(fil+1,col) == CasillaSelec || estado.See_Casilla(fil+1,col)) == CasillaSelec+3
+            && (estado.See_Casilla(fil+2,col) == CasillaSelec || estado.See_Casilla(fil+2,col) == CasillaSelec+3);
+    abajo = (estado.See_Casilla(fil-1,col) == CasillaSelec || estado.See_Casilla(fil-1,col) == CasillaSelec+3)
+            && (estado.See_Casilla(fil-2,col) == CasillaSelec || estado.See_Casilla(fil-2,col) == CasillaSelec+3);
+    diag1 = (estado.See_Casilla(fil+1,col-1) == CasillaSelec || estado.See_Casilla(fil+1,col-1) == CasillaSelec+3)
+            && (estado.See_Casilla(fil+2,col-2) == CasillaSelec || estado.See_Casilla(fil+2,col-2) == CasillaSelec+3);
+    diag2 = (estado.See_Casilla(fil+1,col+1) == CasillaSelec || estado.See_Casilla(fil+1,col+1) == CasillaSelec+3)
+            && estado.See_Casilla(fil+2,col+2) == CasillaSelec || estado.See_Casilla(fil+2,col+2) == CasillaSelec+3;
+    diag3 = (estado.See_Casilla(fil-1,col-1) == CasillaSelec || estado.See_Casilla(fil-1,col-1) == CasillaSelec+3)
+            && (estado.See_Casilla(fil-2,col-2) == CasillaSelec || estado.See_Casilla(fil-2,col-2) == CasillaSelec+3);
+    diag4 = (estado.See_Casilla(fil-1,col+1) == CasillaSelec || estado.See_Casilla(fil-1,col+1) == CasillaSelec+3)
+            && (estado.See_Casilla(fil-2,col+2) == CasillaSelec || estado.See_Casilla(fil-2,col+2) == CasillaSelec+3);
+    izq = (estado.See_Casilla(fil,col-1) == CasillaSelec || estado.See_Casilla(fil,col-1) == CasillaSelec+3)
+            && (estado.See_Casilla(fil,col-2) == CasillaSelec || estado.See_Casilla(fil,col-2) == CasillaSelec+3);
+    dch = (estado.See_Casilla(fil,col+1) == CasillaSelec || estado.See_Casilla(fil,col+1) == CasillaSelec+3)
+            && (estado.See_Casilla(fil,col+2) == CasillaSelec || estado.See_Casilla(fil,col+2) == CasillaSelec+3);
+
+   if(arriba || abajo || diag1 || diag2 || diag3|| diag4 || izq || dch){
+        triple=true;
+        valor+=3;
+    }
+    return triple;
+
+}
 
 
 
@@ -78,16 +127,17 @@ double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
             if((i!=fila || j!=col) && i>=0 && i<7 && j>=0 && j<7){  //Si la casilla seleccionada es la correcta y está dentro del tablero
                 casillaCercana = estado.See_Casilla(i,j);           //Almacenamos la casilla cercana
 
-                if((casillaCercana == casillaSelec || casillaCercana == casillaSelec + 3) && casillaSelec == jugador){ //Si la casilla es la del jugador actual comprobamos que no este al lado de ninguna de su mismo color
-                                                                                                                       // y de ser asi se reduce el valor
-                    valor = valor - 2 ;
-                } else //En caso contrario aumentamos la valoracion. Ya que estara al lado de distinto color, o de una del adversario.
+                if((casillaCercana == casillaSelec || casillaCercana == casillaSelec + 3) && casillaSelec == jugador){ //Si la casilla es la del jugador actual comprobamos que no este al
+                                                                                                                       //lado de ninguna de su mismo color y de ser asi se reduce el valor
                     valor++;
-
-
+                } else //En caso contrario aumentamos la valoracion. Ya que estara al lado de distinto color, o de una del adversario.
+                    valor = valor - 2 ;
             }
         }
     }
+
+    //CompDoble(estado, casillaSelec, fila, col, valor);
+    //CompTriple(estado, casillaSelec, fila, col, valor);
 
 return valor;
 }
