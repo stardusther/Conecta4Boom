@@ -63,24 +63,28 @@ double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
     int casillaSelec = estado.See_Casilla(fila,col), // Casilla seleccionada
         casillaCercana;                              // Casillas que están al lado de la casilla a valorar
 
-   if (casillaSelec == 4) // Ficha bomba j1 pertenece al j1
+// Determinar el jugador actual --------------------------------------------------
+   if (casillaSelec == 4) // Ficha bomba, pertenece al j1
         casillaSelec = 1;
-    else if(casillaSelec == 5) // Ficha bomba j2 pertenece al j2
+    else if(casillaSelec == 5) // Ficha bomba, pertenece al j2
         casillaSelec == 2;
-    else if(casillaSelec == 0)  // Ficha vacia = 0 , pertenece al jugar actual
+    else if(casillaSelec == 0)  // Casilla vacia = 0
         casillaSelec == jugador;
 
-    //Analizamos las 8 casillas que rodean a la seleccionada
+// Analizamos las 8 casillas que rodean a la seleccionada ------------------------
     for (int i=fila-1; i<=fila+1; i++){
         for (int j=col-1; j<=col+1; j++){
 
-            if(i!=fila && j!=col && i>=0 && i<7 && j>=0 && j<7){ //Si la casilla seleccionada es la correcta y está dentro del tablero
-                casillaCercana = estado.See_Casilla(i,j);
+            if((i!=fila || j!=col) && i>=0 && i<7 && j>=0 && j<7){  //Si la casilla seleccionada es la correcta y está dentro del tablero
+                casillaCercana = estado.See_Casilla(i,j);           //Almacenamos la casilla cercana
 
-                if((casillaCercana == casillaSelec || casillaCercana == casillaSelec + 3) && casillaSelec == jugador) //Si la casilla es la del jugador actual comprobamos que no este al lado de ninguna de su mismo color y de ser asi se reduce el valor
-                    valor = valor -2 ;
-                else //En caso contrario aumentamos la valoracion. Ya que estara al lado de distinto color, o de una del adversario.
+                if((casillaCercana == casillaSelec || casillaCercana == casillaSelec + 3) && casillaSelec == jugador){ //Si la casilla es la del jugador actual comprobamos que no este al lado de ninguna de su mismo color
+                                                                                                                       // y de ser asi se reduce el valor
+                    valor = valor - 2 ;
+                } else //En caso contrario aumentamos la valoracion. Ya que estara al lado de distinto color, o de una del adversario.
                     valor++;
+
+
             }
         }
     }
@@ -89,13 +93,16 @@ return valor;
 }
 
 
-//heuristica. Devuelve la suma de todos los valores de las casillas del tablero
+// Mi heuristica. Devuelve la suma de todos los valores de las casillas del tablero
 double func_heur(const Environment &estado,int jugador){
-    double total;
+    double total = 0;
+    double vc = 0;
 
     for (int fil=0; fil<7; ++fil)       // Recorremos la matriz
-        for (int col=0; col<7; ++col)
-            total += ValorCasilla(estado,jugador, fil, col);
+        for (int col=0; col<7; ++col){
+            vc = ValorCasilla(estado,jugador, fil, col);
+            total += vc;
+        }
 
     return total;
 }
@@ -157,7 +164,7 @@ double Poda_AlfaBeta(const Environment &actual,int jugador, int profundidad,  in
         accion = static_cast <Environment::ActionType>(estado.Last_Action(jugador));
         return alpha;   // Devolvemos el nodo alpha
 
-    } else { // Si no , estamos en un nodo MIN
+    } else { // Si no, estamos en un nodo MIN
 
         for (int i = 0 ; i < num_hijos ; i++) {
             valor_nodo = Poda_AlfaBeta(hijo[i], jugador, profundidad+1, PROFUNDIDAD_ALFABETA, accion, alpha, beta);
@@ -172,7 +179,7 @@ double Poda_AlfaBeta(const Environment &actual,int jugador, int profundidad,  in
         }
 
         accion = static_cast <Environment::ActionType >(estado.Last_Action(jugador));
-        return beta;
+        return beta; // Devolvemos el nodo beta
     }
 }
 
@@ -242,15 +249,15 @@ Environment::ActionType Player::Think(){
 
     //--------------------- AQUI EMPIEZA LA PARTE A REALIZAR POR EL ALUMNO ------------------------------------------------
 
-    if (actual_.See_Casilla(0,0) == 0 &&    // Para que empiece por la casilla central siempre porque si no me da TOC
+    if ((actual_.See_Casilla(0,0) == 0 &&
 	  actual_.See_Casilla(0,1) == 0 &&
 	  actual_.See_Casilla(0,2) == 0 &&
 	  actual_.See_Casilla(0,3) == 0 &&
 	  actual_.See_Casilla(0,4) == 0 &&
 	  actual_.See_Casilla(0,5) == 0 &&
-	  actual_.See_Casilla(0,6) == 0)
+	  actual_.See_Casilla(0,6) == 0))
 	{
-	  cout << "Primera jugada" << endl;
+	  cout << "Empezando por el centro" << endl;
 	  return Environment::PUT4;
 
 	}
