@@ -53,58 +53,6 @@ double ValoracionTest(const Environment &estado, int jugador){
 
 // ------------------- Los tres metodos anteriores no se pueden modificar
 
-bool CompDoble(const Environment &estado, int CasillaSelec, int fil, int col, double &valor){
-    bool arriba, abajo, diag1, diag2, diag3, diag4, izq, dch; // al rededor
-    bool doble = false;
-
-    arriba = estado.See_Casilla(fil+1,col) == CasillaSelec || estado.See_Casilla(fil+1,col) == CasillaSelec+3;
-    abajo = estado.See_Casilla(fil-1,col) == CasillaSelec || estado.See_Casilla(fil-1,col) == CasillaSelec+3;
-    diag1 = estado.See_Casilla(fil+1,col-1) == CasillaSelec || estado.See_Casilla(fil+1,col-1) == CasillaSelec+3;
-    diag2 = estado.See_Casilla(fil+1,col+1) == CasillaSelec || estado.See_Casilla(fil+1,col+1) == CasillaSelec+3;
-    diag3 = estado.See_Casilla(fil-1,col-1) == CasillaSelec || estado.See_Casilla(fil-1,col-1) == CasillaSelec+3;
-    diag4 = estado.See_Casilla(fil-1,col+1) == CasillaSelec || estado.See_Casilla(fil-1,col+1) == CasillaSelec+3;
-    izq = estado.See_Casilla(fil,col-1) == CasillaSelec || estado.See_Casilla(fil,col-1) == CasillaSelec+3;
-    dch = estado.See_Casilla(fil,col+1) == CasillaSelec || estado.See_Casilla(fil,col+1) == CasillaSelec+3;
-
-    if(arriba || abajo || diag1 || diag2 || diag3|| diag4 || izq || dch){
-        doble=true;
-        valor+=2;
-    }
-    return doble;
-}
-
-bool CompTriple(const Environment &estado, int CasillaSelec, int fil, int col, double &valor){
-    bool arriba, abajo, diag1, diag2, diag3, diag4, izq, dch; // al rededor
-    bool triple = false;
-    double aux;
-
-    arriba = (estado.See_Casilla(fil+1,col) == CasillaSelec || estado.See_Casilla(fil+1,col)) == CasillaSelec+3
-            && (estado.See_Casilla(fil+2,col) == CasillaSelec || estado.See_Casilla(fil+2,col) == CasillaSelec+3);
-    abajo = (estado.See_Casilla(fil-1,col) == CasillaSelec || estado.See_Casilla(fil-1,col) == CasillaSelec+3)
-            && (estado.See_Casilla(fil-2,col) == CasillaSelec || estado.See_Casilla(fil-2,col) == CasillaSelec+3);
-    diag1 = (estado.See_Casilla(fil+1,col-1) == CasillaSelec || estado.See_Casilla(fil+1,col-1) == CasillaSelec+3)
-            && (estado.See_Casilla(fil+2,col-2) == CasillaSelec || estado.See_Casilla(fil+2,col-2) == CasillaSelec+3);
-    diag2 = (estado.See_Casilla(fil+1,col+1) == CasillaSelec || estado.See_Casilla(fil+1,col+1) == CasillaSelec+3)
-            && estado.See_Casilla(fil+2,col+2) == CasillaSelec || estado.See_Casilla(fil+2,col+2) == CasillaSelec+3;
-    diag3 = (estado.See_Casilla(fil-1,col-1) == CasillaSelec || estado.See_Casilla(fil-1,col-1) == CasillaSelec+3)
-            && (estado.See_Casilla(fil-2,col-2) == CasillaSelec || estado.See_Casilla(fil-2,col-2) == CasillaSelec+3);
-    diag4 = (estado.See_Casilla(fil-1,col+1) == CasillaSelec || estado.See_Casilla(fil-1,col+1) == CasillaSelec+3)
-            && (estado.See_Casilla(fil-2,col+2) == CasillaSelec || estado.See_Casilla(fil-2,col+2) == CasillaSelec+3);
-    izq = (estado.See_Casilla(fil,col-1) == CasillaSelec || estado.See_Casilla(fil,col-1) == CasillaSelec+3)
-            && (estado.See_Casilla(fil,col-2) == CasillaSelec || estado.See_Casilla(fil,col-2) == CasillaSelec+3);
-    dch = (estado.See_Casilla(fil,col+1) == CasillaSelec || estado.See_Casilla(fil,col+1) == CasillaSelec+3)
-            && (estado.See_Casilla(fil,col+2) == CasillaSelec || estado.See_Casilla(fil,col+2) == CasillaSelec+3);
-
-   if(arriba || abajo || diag1 || diag2 || diag3|| diag4 || izq || dch){
-        triple=true;
-        valor+=3;
-    }
-    return triple;
-
-}
-
-
-
 // Devuelve un valor segun la heuristica de cada casilla seleccionada
 double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
 
@@ -186,7 +134,7 @@ double Valoracion(const Environment &estado, int jugador){
 }*/
 
 
-double Poda_AlfaBeta(const Environment &actual,int jugador, int profundidad,  int PROFUNDIDAD_ALFABETA, Environment::ActionType &accion, double alpha, double beta){
+double Player::Poda_AlfaBeta(const Environment &actual,int jugador, int profundidad,  int PROFUNDIDAD_ALFABETA, Environment::ActionType &accion, double alpha, double beta){
 
     double valor_nodo;        // Valor del nodo
     Environment hijo[8];      // Nodo Inicial y todos sus estados
@@ -197,40 +145,35 @@ double Poda_AlfaBeta(const Environment &actual,int jugador, int profundidad,  in
     if (profundidad == PROFUNDIDAD_ALFABETA || actual.JuegoTerminado()) // Si hemos llegado a la profundidad MAX
         return Valoracion(actual,jugador);
 
-    if (actual.JugadorActivo()==jugador) { //Estamos en un nodo MAX
+    for(int i = 0; i< num_hijos; i++) {
+        valor_nodo = Poda_AlfaBeta(hijo[i], jugador, profundidad+1, PROFUNDIDAD_ALFABETA, accion, alpha, beta);
 
-        for(int i = 0; i< num_hijos; i++) {
-            valor_nodo = Poda_AlfaBeta(hijo[i], jugador, profundidad+1, PROFUNDIDAD_ALFABETA, accion, alpha, beta);
+        if (actual.JugadorActivo()==jugador) { //Estamos en un nodo MAX
 
-            if (valor_nodo > alpha ) {
+            if (valor_nodo > alpha) {
                 alpha = valor_nodo;
                 estado = hijo[i];
             }
 
-            if (beta <= alpha) // Si beta es menor que alpha hemos terminado
-                break;
-        }
-
-        accion = static_cast <Environment::ActionType>(estado.Last_Action(jugador));
-        return alpha;   // Devolvemos el nodo alpha
-
-    } else { // Si no, estamos en un nodo MIN
-
-        for (int i = 0 ; i < num_hijos ; i++) {
-            valor_nodo = Poda_AlfaBeta(hijo[i], jugador, profundidad+1, PROFUNDIDAD_ALFABETA, accion, alpha, beta);
+        } else { // Si no, estamos en un nodo MIN
 
             if (valor_nodo < beta) {
                 beta = valor_nodo;
                 estado = hijo[i];
             }
-
-            if (beta <= alpha)  // Si beta es menor que alpha hemos terminado
-                break;
         }
 
-        accion = static_cast <Environment::ActionType >(estado.Last_Action(jugador));
-        return beta; // Devolvemos el nodo beta
+        if (beta <= alpha) // Si beta es menor que alpha hemos terminado
+                break;
     }
+
+    if(profundidad == 0)
+        accion = static_cast <Environment::ActionType>(estado.Last_Action(jugador));
+
+    if (actual.JugadorActivo() == jugador)
+        return alpha;
+    else
+        return beta;
 }
 
 
