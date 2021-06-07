@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const double masinf=9999999999.0, menosinf=-9999999999.0;
+const double masinf=100000.0, menosinf=-100000.0;
 
 
 // Constructor
@@ -20,36 +20,69 @@ void Player::Perceive(const Environment & env){
     actual_=env;
 }
 
-/*double Puntuacion(int jugador, const Environment &estado){
-    double suma=0;
+int comprobarH(const Environment &estado, int jugador, int f, int c){
+    bool iguales = true;
+    int val = 0;
 
-    for (int i=0; i<7; i++)
-      for (int j=0; j<7; j++){
-         if (estado.See_Casilla(i,j)==jugador){
-            if (j<3)
-               suma += j;
-            else
-               suma += (6-j);
-         }
-      }
+    int casilla = estado.See_Casilla(f,c),
+        casilla2;
 
-    return suma;
+    for(int i=c+1; i<7 && iguales; ++i){
+        casilla2 = estado.See_Casilla(f,i)%3; // nosotros
+        if(jugador == casilla2)
+            val+=100;
+        else if(casilla2 ==(jugador%2)+1){      // oponente
+            iguales = false;
+            val-=100;
+        }
+    }
+
+    iguales = true;
+
+    for(int i=c-1; i>0 && iguales; --i){
+        casilla2 = estado.See_Casilla(f,i)%3;
+        if(jugador == casilla2)
+            val+=100;
+        else if(casilla2 ==(jugador%2)+1){      // oponente
+            iguales = false;
+            val-=100;
+        }
+    }
+
+    return val;
 }
 
+int comprobarV(const Environment &estado, int jugador, int f, int c){
+    bool iguales = true;
+    int val = 0;
 
-// Funcion de valoracion para testear Poda Alfabeta
-double ValoracionTest(const Environment &estado, int jugador){
-    int ganador = estado.RevisarTablero();
+    int casilla = estado.See_Casilla(f,c),
+        casilla2;
 
-    if (ganador == jugador)
-       return 99999999.0; // Gana el jugador verde
-    else if (ganador!=0)
-            return -99999999.0; // Pierde el jugador que pide la valoracion
-    else if (estado.Get_Casillas_Libres() == 0)
-            return 0;  // Hay un empate global y se ha rellenado completamente el tablero
-    else
-          return Puntuacion(jugador,estado);
-}*/
+    for(int i=f+1; i<7 && iguales; ++i){
+        casilla2 = estado.See_Casilla(i,c)%3;
+        if(jugador == casilla2)
+            val+=100;
+        else if(casilla2 ==(jugador%2)+1){      // oponente
+            iguales = false;
+            val-=100;
+        }
+    }
+
+    iguales = true;
+
+    for(int i=f-1; i>0 && iguales; --i){
+        casilla2 = estado.See_Casilla(i,c)%3;
+        if(jugador == casilla2)
+            val+=100;
+        else if(casilla2 ==(jugador%2)+1){      // oponente
+            iguales = false;
+            val-=100;
+        }
+    }
+
+    return val;
+}
 
 // ------------------- Los tres metodos anteriores no se pueden modificar
 
@@ -80,12 +113,12 @@ double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
                     valor++;
                 } else //En caso contrario aumentamos la valoracion. Ya que estara al lado de distinto color, o de una del adversario.
                     valor = valor - 2 ;
+
+                //valor = valor + comprobarH(estado, jugador, fila, col);
+                //valor = valor + comprobarV(estado, jugador, fila, col);
             }
         }
     }
-
-    //CompDoble(estado, casillaSelec, fila, col, valor);
-    //CompTriple(estado, casillaSelec, fila, col, valor);
 
 return valor;
 }
@@ -111,9 +144,9 @@ double Valoracion(const Environment &estado, int jugador){
     int ganador = estado.RevisarTablero();
 
     if (ganador==jugador)
-        return 99999999.0;  // Gana el jugador que pide la valoracion
+        return masinf;  // Gana el jugador que pide la valoracion
     else if (ganador != 0)
-        return -99999999.0; // Pierde el jugador que pide la valoracion
+        return menosinf; // Pierde el jugador que pide la valoracion
     else if (estado.Get_Casillas_Libres()==0)
         return 0;  // Hay un empate global y se ha rellenado completamente el tablero
     else
