@@ -20,70 +20,6 @@ void Player::Perceive(const Environment & env){
     actual_=env;
 }
 
-int comprobarH(const Environment &estado, int jugador, int f, int c){
-    bool iguales = true;
-    int val = 0;
-
-    int casilla = estado.See_Casilla(f,c),
-        casilla2;
-
-    for(int i=c+1; i<7 && iguales; ++i){
-        casilla2 = estado.See_Casilla(f,i)%3; // nosotros
-        if(jugador == casilla2)
-            val+=100;
-        else if(casilla2 ==(jugador%2)+1){      // oponente
-            iguales = false;
-            val-=100;
-        }
-    }
-
-    iguales = true;
-
-    for(int i=c-1; i>0 && iguales; --i){
-        casilla2 = estado.See_Casilla(f,i)%3;
-        if(jugador == casilla2)
-            val+=100;
-        else if(casilla2 ==(jugador%2)+1){      // oponente
-            iguales = false;
-            val-=100;
-        }
-    }
-
-    return val;
-}
-
-int comprobarV(const Environment &estado, int jugador, int f, int c){
-    bool iguales = true;
-    int val = 0;
-
-    int casilla = estado.See_Casilla(f,c),
-        casilla2;
-
-    for(int i=f+1; i<7 && iguales; ++i){
-        casilla2 = estado.See_Casilla(i,c)%3;
-        if(jugador == casilla2)
-            val+=100;
-        else if(casilla2 ==(jugador%2)+1){      // oponente
-            iguales = false;
-            val-=100;
-        }
-    }
-
-    iguales = true;
-
-    for(int i=f-1; i>0 && iguales; --i){
-        casilla2 = estado.See_Casilla(i,c)%3;
-        if(jugador == casilla2)
-            val+=100;
-        else if(casilla2 ==(jugador%2)+1){      // oponente
-            iguales = false;
-            val-=100;
-        }
-    }
-
-    return val;
-}
-
 // ------------------- Los tres metodos anteriores no se pueden modificar
 
 // Devuelve un valor segun la heuristica de cada casilla seleccionada
@@ -112,7 +48,6 @@ double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
                         valor+=4;
                 else //En caso contrario reducimos la valoracion. Ya que estara al lado de una de distinto color (del adversario).
                         valor-- ;
-    // comprobar si el otro va a hacer 4 en raya
             }
         }
     }
