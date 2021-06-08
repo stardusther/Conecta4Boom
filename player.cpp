@@ -278,19 +278,6 @@ Environment::ActionType Player::Think(){
 
     //--------------------- AQUI EMPIEZA LA PARTE A REALIZAR POR EL ALUMNO ------------------------------------------------
 
-    if ((actual_.See_Casilla(0,0) == 0 &&
-	  actual_.See_Casilla(0,1) == 0 &&
-	  actual_.See_Casilla(0,2) == 0 &&
-	  actual_.See_Casilla(0,3) == 0 &&
-	  actual_.See_Casilla(0,4) == 0 &&
-	  actual_.See_Casilla(0,5) == 0 &&
-	  actual_.See_Casilla(0,6) == 0))
-	{
-	  cout << "Empezando por el centro" << endl;
-	  return Environment::PUT4;
-
-	}
-
     // Opcion: Poda AlfaBeta
     // NOTA: La parametrizacion es solo orientativa
     valor = Poda_AlfaBeta(actual_, jugador_, 0, PROFUNDIDAD_ALFABETA, accion, alpha, beta);
