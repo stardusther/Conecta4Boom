@@ -101,9 +101,9 @@ double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
     else if(casillaSelec == 0)  // Casilla vacia = 0
         casillaSelec == jugador;
 
-// Analizamos las 8 casillas que rodean a la seleccionada ------------------------
-    for (int i=fila-1; i<=fila+1; i++){
-        for (int j=col-1; j<=col+1; j++){
+// Analizamos las casillas que rodean a la seleccionada ------------------------
+    for (int i=fila-3; i<=fila+3; i++){
+        for (int j=col-3; j<=col+3; j++){
 
             if((i!=fila || j!=col) && i>=0 && i<7 && j>=0 && j<7){  //Si la casilla seleccionada es la correcta y está dentro del tablero
                 casillaCercana = estado.See_Casilla(i,j);           //Almacenamos la casilla cercana
@@ -113,9 +113,6 @@ double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
                     valor++;
                 } else //En caso contrario aumentamos la valoracion. Ya que estara al lado de distinto color, o de una del adversario.
                     valor = valor - 2 ;
-
-                //valor = valor + comprobarH(estado, jugador, fila, col);
-                //valor = valor + comprobarV(estado, jugador, fila, col);
             }
         }
     }
