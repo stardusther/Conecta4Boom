@@ -93,7 +93,7 @@ double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
     int casillaSelec = estado.See_Casilla(fila,col), // Casilla seleccionada
         casillaCercana;                              // Casillas que están al lado de la casilla a valorar
 
-// Determinar el jugador actual --------------------------------------------------
+// Determinar el jugador al que pertenece la ficha --------------------------------------------------
    if (casillaSelec == 4) // Ficha bomba, pertenece al j1
         casillaSelec = 1;
     else if(casillaSelec == 5) // Ficha bomba, pertenece al j2
@@ -102,17 +102,17 @@ double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
         casillaSelec == jugador;
 
 // Analizamos las casillas que rodean a la seleccionada ------------------------
-    for (int i=fila-3; i<=fila+3; i++){
-        for (int j=col-3; j<=col+3; j++){
+    for (int j=col-3; j<=col+3; j++){
+        for (int i=fila-3; i<=fila+3; i++){
 
             if((i!=fila || j!=col) && i>=0 && i<7 && j>=0 && j<7){  //Si la casilla seleccionada es la correcta y está dentro del tablero
-                casillaCercana = estado.See_Casilla(i,j);           //Almacenamos la casilla cercana
+                casillaCercana = estado.See_Casilla(i,j)%3;           //Almacenamos la casilla cercana (si fuera 4%3=1 y 1%3=1)
 
-                if((casillaCercana == casillaSelec || casillaCercana == casillaSelec + 3) && casillaSelec == jugador){ //Si la casilla es la del jugador actual comprobamos que no este al
-                                                                                                                       //lado de ninguna de su mismo color y de ser asi se reduce el valor
-                    valor++;
-                } else //En caso contrario aumentamos la valoracion. Ya que estara al lado de distinto color, o de una del adversario.
-                    valor = valor - 2 ;
+                if(casillaCercana == casillaSelec && casillaSelec == jugador)//Si la casilla es la del jugador actual comprobamos que esté al lado de alguna de su mismo color y de ser asi se amenta el valor
+                        valor+=4;
+                else //En caso contrario reducimos la valoracion. Ya que estara al lado de una de distinto color (del adversario).
+                        valor-- ;
+    // comprobar si el otro va a hacer 4 en raya
             }
         }
     }
@@ -124,12 +124,11 @@ return valor;
 // Mi heuristica. Devuelve la suma de todos los valores de las casillas del tablero
 double func_heur(const Environment &estado,int jugador){
     double total = 0;
-    double vc = 0;
+    //double vc = 0;
 
-    for (int fil=0; fil<7; ++fil)       // Recorremos la matriz
-        for (int col=0; col<7; ++col){
-            vc = ValorCasilla(estado,jugador, fil, col);
-            total += vc;
+    for (int col=0; col<7; ++col)       // Recorremos la matriz
+        for (int fil=0; fil<7; ++fil){
+            total += ValorCasilla(estado,jugador, fil, col);
         }
 
     return total;
@@ -141,9 +140,9 @@ double Valoracion(const Environment &estado, int jugador){
     int ganador = estado.RevisarTablero();
 
     if (ganador==jugador)
-        return masinf;  // Gana el jugador que pide la valoracion
+        return 10000.0;  // Gana el jugador que pide la valoracion
     else if (ganador != 0)
-        return menosinf; // Pierde el jugador que pide la valoracion
+        return -10000.0; // Pierde el jugador que pide la valoracion
     else if (estado.Get_Casillas_Libres()==0)
         return 0;  // Hay un empate global y se ha rellenado completamente el tablero
     else
@@ -195,10 +194,17 @@ double Player::Poda_AlfaBeta(const Environment &actual,int jugador, int profundi
 
         if (beta <= alpha) // Si beta es menor que alpha hemos terminado
                 break;
+
+        if(profundidad == 0){   // Control de errores
+            accion = static_cast <Environment::ActionType>(estado.Last_Action(jugador));
+            cout << "\tValor: " << valor_nodo << "\tAccion: " << accion +1<< endl;
+        }
     }
 
-    if(profundidad == 0)
+    if(profundidad == 0){
         accion = static_cast <Environment::ActionType>(estado.Last_Action(jugador));
+        cout << "\nValor final: " << valor_nodo << "\tAccion escogida: " << accion +1<< endl;
+    }
 
     if (actual.JugadorActivo() == jugador)
         return alpha;
