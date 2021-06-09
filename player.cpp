@@ -26,16 +26,16 @@ void Player::Perceive(const Environment & env){
 double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
 
     double valor = 0;
-    int casillaSelec = estado.See_Casilla(fila,col), // Casilla seleccionada
-        casillaCercana;                              // Casillas que están al lado de la casilla a valorar
+    int casilla = estado.See_Casilla(fila,col), // Casilla seleccionada
+        casillaCercana;                         // Casillas que están al lado de la casilla a valorar
 
 // Determinar el jugador al que pertenece la ficha --------------------------------------------------
-   if (casillaSelec == 4) // Ficha bomba, pertenece al j1
-        casillaSelec = 1;
-    else if(casillaSelec == 5) // Ficha bomba, pertenece al j2
-        casillaSelec == 2;
-    else if(casillaSelec == 0)  // Casilla vacia = 0
-        casillaSelec == jugador;
+   if (casilla == 4) // Ficha bomba, pertenece al j1
+        casilla = 1;
+    else if(casilla == 5) // Ficha bomba, pertenece al j2
+        casilla == 2;
+    else if(casilla == 0)  // Casilla vacia = 0
+        casilla == jugador;
 
 // Analizamos las casillas que rodean a la seleccionada ------------------------
     for (int j=col-3; j<=col+3; j++){
@@ -44,7 +44,7 @@ double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
             if((i!=fila || j!=col) && i>=0 && i<7 && j>=0 && j<7){  //Si la casilla seleccionada es la correcta y está dentro del tablero
                 casillaCercana = estado.See_Casilla(i,j)%3;           //Almacenamos la casilla cercana (si fuera 4%3=1 y 1%3=1)
 
-                if(casillaCercana == casillaSelec && casillaSelec == jugador)//Si la casilla es la del jugador actual comprobamos que esté al lado de alguna de su mismo color y de ser asi se amenta el valor
+                if(casillaCercana == casilla && casilla == jugador)//Si la casilla es la del jugador actual comprobamos que esté al lado de alguna de su mismo color y de ser asi se amenta el valor
                         valor+=4;
                 else //En caso contrario reducimos la valoracion. Ya que estara al lado de una de distinto color (del adversario).
                         valor--;
