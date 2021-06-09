@@ -601,7 +601,7 @@ void GUI::control_cb(int id){
           cout << "\tJugando contra el NINJA 2 (una batalla de igual a igual)\n";
         }
         else{
-          Cliente.Establecer_Conexion(field_ip_ninja, "5129");
+          Cliente.Establecer_Conexion(field_ip_ninja, "5130");
           cout << "\tJugando contra el NINJA 3 (no es tan difícil como esperaba)\n";
         }
 

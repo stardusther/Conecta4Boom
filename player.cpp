@@ -47,7 +47,7 @@ double ValorCasilla(const Environment &estado, int jugador, int fila, int col){
                 if(casillaCercana == casillaSelec && casillaSelec == jugador)//Si la casilla es la del jugador actual comprobamos que esté al lado de alguna de su mismo color y de ser asi se amenta el valor
                         valor+=4;
                 else //En caso contrario reducimos la valoracion. Ya que estara al lado de una de distinto color (del adversario).
-                        valor-- ;
+                        valor--;
             }
         }
     }
